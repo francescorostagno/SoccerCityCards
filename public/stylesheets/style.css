@@ -295,4 +295,7 @@ table.cards_table{
     margin: 10px;
   }
 
+  #dialog{
+    width: 80%;
+  }
 }
