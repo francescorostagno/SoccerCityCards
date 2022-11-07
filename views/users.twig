@@ -1,0 +1,263 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse sidebar-offcanvas" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="/users">
+                            <img src="/images/logo.png" width="200" height="60" class="d-inline-block" alt="">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/users">Home</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row initial_container" >
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="h5"><h2>{{ user.username }}</h2> <button class="btn btn-primary" onclick="editProfile()" style="width: 15%"><i class="fa fa-edit"></i></button></div>
+                    <div class="h7 text-muted">{{ user.email }}</div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 gedf-main">
+            <div class="card gedf-card">
+                <div class="card-header">
+                    <form action="/users" method="GET">
+                        <div class="input-group">
+                            <div class="form-outline">
+                                <input type="search" id="form1" name="search" placeholder="Ricerca" class="form-control" />
+                            </div>
+                            <button type="submit"  class="btn btn-primary button_home">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <label for="addCard"> Aggiungi una carta:</label>
+                        <button class="btn btn-primary button_home" name="addCard" id="addCard" onclick="addCard()" ><i class="fa fa-edit"></i></button>
+                        <label for="addClient">Aggiungi un cliente: </label>
+                        <button class="btn btn-primary button_home" onclick="addClient()" ><i class="fa fa-edit"></i></button>
+                    </div>
+                    <div id="content"></div>
+                    <table class="table table-bordered cards_table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Card Name</th>
+                            <th scope="col">Nome Giocatore</th>
+                            <th scope="col">Valore</th>
+                            <th scope="col">Tiratura</th>
+                            <th scope="col">Propietario</th>
+                            <th scope="col">Azione</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if cards.length > 0%}
+                            {%  for dt in cards %}
+                                <tr>
+                                    <td>{{ dt.card_name }}</td>
+                                    <td>{{ dt.player_name }}</td>
+                                    <td>{{ dt.value }}</td>
+                                    <td>{{ dt.printing }}</td>
+                                    <td>
+                                        <a href="/users?client_id={{ dt.client_id }}">{{ dt.client_name }} {{ dt.client_surname }}</a>
+                                        <br>
+                                        ( {{ dt.client_email }} )
+                                    </td>
+                                    <td>
+                                        <a href="/users/delete_card?id={{ dt.id }}" class="fa fa-trash" aria-hidden="true"></a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let user_id = "{{ user.id }}";
+        let username = "{{ user.username }}";
+        let email = "{{ user.email }}";
+
+
+        function editProfile(){
+
+            $('#dialog').remove();
+            $('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"></div>');
+            let html = '';
+            html += "<div>";
+            html += "   <label for='' >Username:</label>";
+            html += "   <input type='text' value='"+username+"' name='username' id='username' >";
+            html += "   <br>"
+            html += "   <label for='' >Email:</label>";
+            html += "   <input type='text' value='"+email+"' name='email' id='email' >";
+            html += "</div>"
+            $('#dialog').html(html);
+
+            $('#dialog').dialog({
+                title: 'Modifica Le Tue Info',
+                width: 500,
+                height: 500,
+                resizable: false,
+                modal: true,
+                buttons: {
+                    ok: function() {
+                        let username = $("input[name='username']").val();
+                        let email = $("input[name='email']").val();
+                        $.ajax({
+                            url: '/users/editProfile',
+                            type: 'POST',
+                            data: { username: username,email:email},
+                            success: function (){
+                                location.reload();
+                            }
+                        })
+                    }
+                }
+            });
+        }
+
+        function addCard(){
+
+            $.ajax({
+                url: '/users/getClients',
+                type: 'GET',
+                success: function (clients){
+                    if(clients){
+                        $('#dialog').remove();
+                        $('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"></div>');
+                        let html = '';
+                        html += "<div>"
+                        html += "   <label for='player_name' >Player Name:</label>";
+                        html += "   <input type='text' value='' name='player_name' id='player_name' >";
+                        html += "   <br>";
+                        html += "   <label for='card_name' >Card Name:</label>";
+                        html += "   <input type='text' value='' name='card_name' id='card_name' >";
+                        html += "   <br>";
+                        html += "   <label for='value' >Valore:</label>";
+                        html += "   <input type='text' value='' name='value' id='value' >";
+                        html += "   <br>";
+                        html += "   <label for='printing' >Tiratura:</label>";
+                        html += "   <input type='text' value='' name='printing' id='value' >";
+                        html += "   <br>";
+                        html += "   <label for='client_id' >Cliente:</label>";
+                        html += "   <select name='client_id' id='client_id' style='width: 200px;display: inline-block; margin-top: 10px'>";
+                        html += "       <option></option>"
+                        for (let i = 0; i < clients.length; i++){
+                            html += " <option value='"+ clients[i]['id'] +"'>"+ clients[i]['name'] +" </option>"
+                        }
+                        html += "   </select>"
+                        html += "   <br>";
+                        html += "   <label for='platform_id' >Piattaforma:</label>";
+                        html += "   <select name='platform_id' id='platform_id' style='width: 200px;display: inline-block; margin-top: 10px'>";
+                        html += "       <option value='1'>EBAY</option>"
+                        html += "       <option value='2'>FACEBOOK</option>"
+                        html += "       <option value='3'>VINTED</option>"
+                        html += "   </select>"
+                        html += "</div>"
+                        $("#client_id").select2({
+                            placeholder: 'Clienti'
+                        })
+
+                        $('#dialog').html(html);
+                        $('#dialog').dialog({
+                            title: 'Aggiungi una carta',
+                            width: 700,
+                            height: 700,
+                            resizable: false,
+                            modal: true,
+                            buttons: {
+                                ok: function() {
+                                    let player_name = $("input[name='player_name']").val();
+                                    let card_name = $("input[name='card_name']").val();
+                                    let printing = $("input[name='printing']").val();
+                                    let value = $("input[name='value']").val();
+                                    let client_id = $("select[name='client_id']").val();
+                                    let platform_id = $("select[name='platform_id']").val();
+                                    $.ajax({
+                                        url: '/users/addCard',
+                                        type: 'POST',
+                                        data: { player_name: player_name, card_name:card_name,printing:printing,value: value,client_id:client_id, platform_id:platform_id},
+                                        success: function (){
+                                            location.reload();
+                                        }
+                                    })
+                                }
+                            }
+                        });
+                    }
+                }
+            })
+
+        }
+
+        function addClient(){
+
+            $('#dialog').remove();
+            $('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"></div>');
+            let html = '';
+            html += "<div>"
+            html += "   <label for='name' >Nome:</label>";
+            html += "   <input type='text' value='' name='name' id='name' >";
+            html += "   <br>";
+            html += "   <label for='surname' >Cognome:</label>";
+            html += "   <input type='text' value='' name='surname' id='surname' >";
+            html += "   <br>";
+            html += "   <label for='email' >Email:</label>";
+            html += "   <input type='text' value='' name='email' id='email' >";
+            html += "   <br>";
+            html += "</div>"
+            $('#dialog').html(html);
+            $('#dialog').dialog({
+                title: 'Aggiungi Cliente',
+                width: 500,
+                height: 500,
+                resizable: false,
+                modal: true,
+                buttons: {
+                    ok: function() {
+                        let name = $("input[name='name']").val();
+                        let surname = $("input[name='surname']").val();
+                        let email = $("input[name='email']").val();
+                        $.ajax({
+                            url: '/users/addClient',
+                            type: 'POST',
+                            data: { name: name,surname:surname,email:email},
+                            success: function (){
+                                location.reload();
+                            }
+                        })
+                    }
+                }
+            });
+        }
+
+
+
+    </script>
+
+{% endblock %}
