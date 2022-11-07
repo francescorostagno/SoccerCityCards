@@ -289,4 +289,10 @@ table.cards_table{
     width: 100%;
   }
 
+
+  .button_home{
+    width: 15%;
+    margin: 10px;
+  }
+
 }
