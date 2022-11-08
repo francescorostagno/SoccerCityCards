@@ -1,9 +1,9 @@
 module.exports = {
     'mysql': {
-        'host': 'eu-cdbr-west-03.cleardb.net',
-        'user': 'b7c11c2f5c5ed8',
-        'password': 'cf5cd4da2f6d62b',
-        'database': 'heroku_dd464d21811495b',
+        'host': 'sql7.freemysqlhosting.net',//'127.0.0.1',//'eu-cdbr-west-03.cleardb.net',
+        'user': 'sql7552436',//'b7c11c2f5c5ed8',
+        'password': 'sql7552436',//'cf5cd4da2f6d62b',
+        'database': 'sql7552436',
         //'port': 8889
     },
     'google':{
