@@ -1,10 +1,9 @@
 module.exports = {
     'mysql': {
-        'host': 'sql7.freemysqlhosting.net',//'127.0.0.1',//'eu-cdbr-west-03.cleardb.net',
+        'host': 'sql7.freemysqlhosting.net',//'eu-cdbr-west-03.cleardb.net',
         'user': 'sql7552436',//'b7c11c2f5c5ed8',
         'password': 'sql7552436',//'cf5cd4da2f6d62b',
-        'database': 'sql7552436',
-        //'port': 8889
+        'database': '9jQZZMyhYF'
     },
     'google':{
         'clientId': '277768178442-91eeosne0uhrfcht63ia2iht6ntkpi7m.apps.googleusercontent.com',
