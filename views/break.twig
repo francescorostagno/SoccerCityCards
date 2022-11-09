@@ -1,0 +1,119 @@
+{% extends 'layout.twig' %}
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse sidebar-offcanvas" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="/users">
+                            <img src="/images/logo.png" width="200" height="60" class="d-inline-block" alt="">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/users">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/break">Break</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row initial_container" >
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="h5"><h2>{{ user.username }}</h2></div>
+                    <div class="h7 text-muted">{{ user.email }}</div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <label for="dice">Rolla i dadi:</label>
+                            <button class="btn-primary" name="dice" style="width: 25%" onclick="rollDice()"><i class="fa-solid fa-dice fa-xl"></i>
+                            </button>
+                            <h2>Risultato: <span id="dice_value_span"></span></h2>
+                            <input type="hidden" value="" name="dice_value" id="dice_value">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 gedf-main">
+            <div class="card gedf-card">
+                <div class="card-header">
+                    <label for="clients">Seleziona i clienti per il break:</label>
+                    <select name="clients" class="clients" id="clients"  style='width: 200px;display: inline-block; margin-top: 10px'>
+                        <option value="0"></option>
+                        {% for client in clients %}
+                            <option value="{{ client.name }} {{ client.surname }}">{{ client.name }}  {{ client.surname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="card-body">
+                    <div id="content"></div>
+                    <h2>Lista break:</h2>
+                    <ol id="break-list">
+
+                    </ol>
+
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary" id="shuffle" onclick="shuffle()" style="width: 10%"><i class="fa-solid fa-shuffle fa-xl"></i></button>
+                    <button class="btn btn-primary" id="clear_count" onclick="clearCount()" style="width: 10%"><i class="fa-solid fa-refresh fa-xl"></i></button>
+                    <button class="btn btn-primary" id="clear_list" onclick="clearList()" style="width: 10%"><i class="fa-solid fa-trash fa-xl"></i></button>
+                    <h3 >Roll n°: <span id="roll_number"></span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let user_id = "{{ user.id }}";
+        let username = "{{ user.username }}";
+        let email = "{{ user.email }}";
+        let count = 0;
+
+        $('#clients').select2({
+            placeholder: 'Seleziona un cliente'
+        })
+
+        $('#clients').on('change', function() {
+            $("#break-list").append("<li><a href='#'>"+this.value+"</a></li>");
+        });
+
+        function rollDice(){
+            let diceRoll = Math.floor( Math.random() * 12 ) +1;
+            $("input[name='dice_value']").val(diceRoll);
+            $('#dice_value_span').text(diceRoll);
+            alert('You rolled a ' + diceRoll);
+        }
+
+        function shuffle(){
+            let ul = document.querySelector('#break-list');
+            for (let j = ul.children.length; j >= 0; j--) {
+                ul.appendChild(ul.children[Math.random() * j | 0]);
+            }
+            count++;
+            $('#roll_number').text(count);
+        }
+
+        function clearCount (){
+            count = 0;
+            $('#roll_number').text(count);
+        }
+
+        function clearList(){
+            $('#break-list').empty();
+            clearCount();
+        }
+
+    </script>
+
+{% endblock %}

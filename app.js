@@ -8,8 +8,9 @@ const passport = require('passport');
 const session = require('express-session');
 const LocalStrategy = require('passport-local');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const breakRouter = require('./routes/break');
 
 const config = require('./config');
 
@@ -72,6 +73,7 @@ passport.use(new LocalStrategy(function verify(username,password,cb){
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/break', breakRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
