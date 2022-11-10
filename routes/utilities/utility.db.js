@@ -42,8 +42,8 @@ const addCard = function (player_name, card_name, value,client_id,platform_id,pr
     })
 }
 
-const addClient = function (name,surname,email,cb){
-    db.query("INSERT INTO clients(name,surname,email) VALUES('"+name+"','"+surname+"','"+email+"')",function (err,res){
+const addClient = function (name,surname,email,user_id,cb){
+    db.query("INSERT INTO clients(name,surname,email,user_id) VALUES('"+name+"','"+surname+"','"+email+"','"+user_id+"')",function (err,res){
         if(!err){
             cb(null,true);
         }else{
@@ -62,8 +62,8 @@ const deleteCard = function (card_id,cb){
     })
 }
 
-const getClientByEmail = function (email,cb){
-    db.query("SELECT * FROM clients WHERE email = '" + email + "' ",function (err,res){
+const getClientByEmail = function (email,user_id,cb){
+    db.query("SELECT * FROM clients WHERE email = '" + email + "' AND user_id ='" + user_id +"' ",function (err,res){
         if(!err){
             if(res.length > 0){
                cb(null,true);
@@ -76,8 +76,8 @@ const getClientByEmail = function (email,cb){
     })
 }
 
-const getClients = function (cb){
-    db.query("SELECT * FROM clients",function (err,data){
+const getClients = function (user_id,cb){
+    db.query("SELECT * FROM clients WHERE user_id = '"+ user_id + "' ",function (err,data){
         if(!err){
             cb(null,data);
         }else{

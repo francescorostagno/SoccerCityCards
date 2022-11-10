@@ -10,7 +10,7 @@ router.get('/', isLoggedIn,function(req, res, next) {
   let cards = {};
   async.series([
       function (callback){
-        getClients(function (err,data){
+        getClients(req.user.id,function (err,data){
           if(!err){
             clients = data;
           }
@@ -59,9 +59,9 @@ router.post('/editProfile',isLoggedIn,function (req,res,next){
 
 router.post('/addClient',isLoggedIn,function (req,res,next){
   if(req.body.name && req.body.email && req.body.surname){
-    getClientByEmail(req.body.email,function (err,exists){
+    getClientByEmail(req.body.email,req.user.id,function (err,exists){
       if(!err && !exists){
-        addClient(req.body.name, req.body.surname, req.body.email,function (err,data){
+        addClient(req.body.name, req.body.surname, req.body.email,req.user.id,function (err,data){
           if(!err && data){
             res.send(true)
           }
