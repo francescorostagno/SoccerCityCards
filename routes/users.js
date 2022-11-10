@@ -37,7 +37,7 @@ router.get('/', isLoggedIn,function(req, res, next) {
 });
 
 router.get('/getClients',isLoggedIn,function (req,res,next){
-  getClients(function (err,data){
+  getClients(req.user.id,function (err,data){
     if(!err){
       res.send(data)
     }
