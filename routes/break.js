@@ -8,7 +8,7 @@ router.get('/', isLoggedIn,function(req, res, next) {
     let clients = {};
     async.series([
         function (callback){
-            getClients(function (err,data){
+            getClients(req.user.id,function (err,data){
                 if(!err){
                     clients = data;
                 }
