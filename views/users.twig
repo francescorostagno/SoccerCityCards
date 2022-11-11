@@ -11,7 +11,7 @@
                         <a class="nav-link active" aria-current="page" href="/users">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/break">Break</a>
+                        <a class="nav-link" aria-current="page" href="/break">Break</a>
                     </li>
 
                 </ul>
@@ -44,8 +44,7 @@
                                 <form action="/users/uploadfile" enctype="multipart/form-data" method="post">
                                     <label for="uploadfile">Aggiorna collezione tramite file csv:
                                     </label>
-                                    <input type="file" name="uploadfile" accept='csv' >
-                                    <input type="submit" value="Upload CSV">
+                                    <input type="file" name="uploadfile" accept='csv' onchange="this.form.submit()">
                                 </form>
                             </li>
                             <li class="list-group-item">
