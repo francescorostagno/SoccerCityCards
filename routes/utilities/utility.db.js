@@ -1,7 +1,24 @@
 const _ = require('lodash');
 const async = require('async');
+const CronJob = require('node-cron');
+const mysqlDump = require('mysqldump');
+const fs = require('fs');
+const config = require('../../config');
 
 
+const backupRemoteDb = function (){
+    CronJob.schedule("0 0 * * *",function (){
+        mysqlDump({
+            host: config.mysql.host,
+            user: config.mysql.user,
+            password: config.mysql.password,
+            port: config.mysql.port,
+            database: config.mysql.database
+        }.then(dump =>{
+            fs.writeFileSync('./downloads/dump.sql',dump);
+        }))
+    })
+}
 const getUserByUsernameAndEmail = function (username,email,cb){
     db.query("SELECT * FROM users WHERE username = '" + username + "' AND email = '" + email +"'",function (err,rows){
         if(!err){
@@ -124,5 +141,6 @@ module.exports = {
     deleteCard,
     getClientByEmail,
     getClients,
-    getCards
+    getCards,
+    backupRemoteDb
 }

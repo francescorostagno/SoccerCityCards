@@ -13,6 +13,7 @@ const usersRouter = require('./routes/users');
 const breakRouter = require('./routes/break');
 
 const config = require('./config');
+const {backupRemoteDb} = require("./routes/utilities/utility.db");
 
 const connection = mysql.createPool({
   host     : config.mysql.host,
@@ -23,8 +24,9 @@ const connection = mysql.createPool({
 })
 
 global.db = connection;
-var app = express();
 
+const app = express();
+backupRemoteDb();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'twig');
