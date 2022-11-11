@@ -2,7 +2,7 @@
 
 {% block body %}
     <section class="prompt">
-        <h3>CardCollection</h3>
+        <h3><img src="/images/logo.png" class="image_logo"></h3>
         <h1>Sign up</h1>
         <form action="/signup" method="post">
             <section>
@@ -18,7 +18,7 @@
                 <input id="new-password" name="password" type="password"  required>
             </section>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button type="submit">Sign up</button>
+            <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
         <hr>
         <p class="help">Already have an account? <a href="/">Sign in</a></p>
