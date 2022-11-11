@@ -1,9 +1,25 @@
 var express = require('express');
 const md5 = require('md5');
 const async = require('async');
+const multer = require('multer');
+const fs = require('fs');
 const {deleteCard, getClientByEmail, addClient, getClients, addCard, getCards} = require("./utilities/utility.db");
-var router = express.Router();
+const router = express.Router();
+const path = require('path');
+const csv = require('fast-csv');
+//! Use of Multer
+const storage = multer.diskStorage({
+  destination: (req, file, callBack) => {
+    callBack(null, './uploads/')
+  },
+  filename: (req, file, callBack) => {
+    callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+})
 
+const upload = multer({
+  storage: storage
+});
 /* GET users listing. */
 router.get('/', isLoggedIn,function(req, res, next) {
   let clients = {};
@@ -88,6 +104,47 @@ router.get('/delete_card',isLoggedIn,function (req,res){
     })
   }
 });
+
+//@type   POST
+// upload csv to database
+router.post('/uploadfile', isLoggedIn,upload.single("uploadfile"), function (req, res,next){
+  UploadCsvDataToMySQL(  './uploads/' + req.file.filename,req.user.id);
+  res.redirect('/users')
+});
+
+router.get('/downloadSample',isLoggedIn,function (req, res, next){
+  res.download( './downloads/sample.csv', function(err) {
+    if (err) {
+      console.log(err)
+    }
+  });
+})
+
+function UploadCsvDataToMySQL(filePath,user_id){
+  let stream = fs.createReadStream(filePath);
+  let csvData = [];
+  let csvStream = csv
+      .parse({headers:true})
+      .on("data", function (data) {
+        csvData.push(data);
+      })
+      .on("end", function () {
+        // Remove Header ROW
+        async.eachSeries(csvData,function (data,callback){
+          addCard(data['player_name'],data['card_name'],data['value'],data['client_id'],data['platform_id'],data['printing'],user_id,function (err,res){
+            callback()
+          })
+        },function (){
+          // delete file after saving to MySQL database
+          // -> you can comment the statement to see the uploaded CSV file.
+          fs.unlinkSync(filePath)
+        })
+
+      });
+
+  stream.pipe(csvStream);
+}
+
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()){

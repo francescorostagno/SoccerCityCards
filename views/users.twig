@@ -29,17 +29,58 @@
     </nav>
     <div class="row initial_container" >
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="h5"><h2>{{ user.username }}</h2>
-                        <br>
-                        <label for="edit_profile">Modifica Il Profilo: </label><button class="btn btn-primary" name="edit_profile" onclick="editProfile()" style="width: 15%;margin-left: 10px"><i class="fa fa-edit"></i></button></div>
-                    <div class="h7 text-muted">{{ user.email }}</div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-
-                        </li>
-                    </ul>
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="h5"><h2>{{ user.username }}</h2>
+                            <br>
+                            <label for="edit_profile">Modifica Il Profilo: </label><button class="btn btn-primary" name="edit_profile" onclick="editProfile()" style="width: 15%;margin-left: 10px"><i class="fa fa-edit"></i></button></div>
+                        <div class="h7 text-muted">{{ user.email }}</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <form action="/users/uploadfile" enctype="multipart/form-data" method="post">
+                                    <label for="uploadfile">Aggiorna collezione tramite file csv:
+                                    </label>
+                                    <input type="file" name="uploadfile" accept='csv' >
+                                    <input type="submit" value="Upload CSV">
+                                </form>
+                            </li>
+                            <li class="list-group-item">
+                                <form action="/users/downloadSample"  method="get">
+                                    <input type="submit" value="Scarica Esempio">
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <span>Lista Clienti</span>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Cognome</th>
+                                    <th scope="col">Id</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if clients.length > 0 %}
+                                    {% for client in clients %}
+                                    <tr>
+                                        <td>{{ client.name }}</td>
+                                        <td>{{ client.surname }}</td>
+                                        <td>{{ client.id }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
