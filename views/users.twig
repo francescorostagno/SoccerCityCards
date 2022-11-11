@@ -114,6 +114,7 @@
                             <th scope="col">Valore</th>
                             <th scope="col">Tiratura</th>
                             <th scope="col">Propietario</th>
+                            <th scope="col">Piattaforma</th>
                             <th scope="col">Azione</th>
                         </tr>
                         </thead>
@@ -130,6 +131,7 @@
                                         <br>
                                         ( {{ dt.client_email }} )
                                     </td>
+                                    <td>{{ dt.sell_platform_name }}</td>
                                     <td>
                                         <a href="/users/delete_card?id={{ dt.id }}" class="fa fa-trash" aria-hidden="true"></a>
                                     </td>

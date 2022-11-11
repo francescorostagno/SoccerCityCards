@@ -33,6 +33,10 @@ button {
   cursor: pointer;
 }
 
+.table {
+  font-size:12px!important;
+}
+
 a.button {
   box-sizing: border-box;
   display: block;
@@ -109,10 +113,6 @@ table.cards_table{
 
 .initial_container{
   margin-top: 20px!important;
-}
-
-.table_image{
-  width: 10%;
 }
 
 .jumbotron {
