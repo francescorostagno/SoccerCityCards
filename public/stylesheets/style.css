@@ -37,6 +37,12 @@ button {
   font-size:12px!important;
 }
 
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
 a.button {
   box-sizing: border-box;
   display: block;
