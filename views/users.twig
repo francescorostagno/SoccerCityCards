@@ -34,11 +34,13 @@
         <div class="col-md-3">
             <div class="row">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
                         <div class="h5"><h2>{{ user.username }}</h2>
                             <br>
-                            <label for="edit_profile">Modifica Il Profilo: </label><button class="btn btn-primary" name="edit_profile" onclick="editProfile()" style="width: 15%;margin-left: 10px"><i class="fa fa-edit"></i></button></div>
-                        <div class="h7 text-muted">{{ user.email }}</div>
+                            <label for="edit_profile">Modifica Il Profilo: </label><button class="btn btn-primary" name="edit_profile" onclick="editProfile()" style="width: 15%;margin-left: 10px"><i class="fa fa-edit"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <form action="/users/uploadfile" enctype="multipart/form-data" method="post">
@@ -236,12 +238,12 @@
                         $('#dialog').html(html);
                         $('#dialog').dialog({
                             title: 'Aggiungi una carta',
-                            width: 700,
-                            height: 700,
+                            width: 500,
+                            height: 600,
                             resizable: false,
                             modal: true,
                             buttons: {
-                                ok: function() {
+                                OK: function() {
                                     let player_name = $("input[name='player_name']").val();
                                     let card_name = $("input[name='card_name']").val();
                                     let printing = $("input[name='printing']").val();
@@ -268,7 +270,7 @@
         function addClient(){
 
             $('#dialog').remove();
-            $('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"></div>');
+            $('#content').prepend('<div id="dialog" class="ui-dialog-contain ui-overlay-shadow ui-corner-all"" style="padding: 3px 0px 0px 0px;"></div>');
             let html = '';
             html += "<div>"
             html += "   <label for='name' >Nome:</label>";
@@ -284,12 +286,12 @@
             $('#dialog').html(html);
             $('#dialog').dialog({
                 title: 'Aggiungi Cliente',
-                width: 500,
-                height: 500,
+                width: 400,
+                height: 400,
                 resizable: false,
                 modal: true,
                 buttons: {
-                    ok: function() {
+                    OK: function() {
                         let name = $("input[name='name']").val();
                         let surname = $("input[name='surname']").val();
                         let email = $("input[name='email']").val();
