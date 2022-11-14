@@ -116,6 +116,7 @@
                             <th scope="col">Card Name</th>
                             <th scope="col">Nome Giocatore</th>
                             <th scope="col">Valore</th>
+                            <th scope="col">Quantità</th>
                             <th scope="col">Tiratura</th>
                             <th scope="col">Propietario</th>
                             <th scope="col">Piattaforma</th>
@@ -129,6 +130,7 @@
                                     <td>{{ dt.card_name }}</td>
                                     <td>{{ dt.player_name }}</td>
                                     <td>{{ dt.value }} €</td>
+                                    <td>{{ dt.qty }}</td>
                                     <td>{{ dt.printing }}</td>
                                     <td>
                                         <a href="/users?client_id={{ dt.client_id }}">{{ dt.client_name }} {{ dt.client_surname }}</a>
@@ -213,6 +215,19 @@
                         html += "   <label for='value' >Valore:</label>";
                         html += "   <input type='text' value='' name='value' id='value' >";
                         html += "   <br>";
+                        html += "   <label for='qty' >Quantità:</label>";
+                        html += "   <select name='qty' id='qty' style='width: 200px;display: inline-block; margin-top: 10px'>";
+                        html += "       <option value='1'>1</option>"
+                        html += "       <option value='2'>2</option>"
+                        html += "       <option value='3'>3</option>"
+                        html += "       <option value='4'>4</option>"
+                        html += "       <option value='5'>5</option>"
+                        html += "       <option value='6'>6</option>"
+                        html += "       <option value='7'>7</option>"
+                        html += "       <option value='8'>8</option>"
+                        html += "       <option value='9'>9</option>"
+                        html += "   </select>"
+                        html += "   <br>";
                         html += "   <label for='printing' >Tiratura:</label>";
                         html += "   <input type='text' value='' name='printing' id='value' >";
                         html += "   <br>";
@@ -250,10 +265,11 @@
                                     let value = $("input[name='value']").val();
                                     let client_id = $("select[name='client_id']").val();
                                     let platform_id = $("select[name='platform_id']").val();
+                                    let qty = $("select[name='qty']").val();
                                     $.ajax({
                                         url: '/users/addCard',
                                         type: 'POST',
-                                        data: { player_name: player_name, card_name:card_name,printing:printing,value: value,client_id:client_id, platform_id:platform_id},
+                                        data: { player_name: player_name, card_name:card_name,printing:printing,value: value,client_id:client_id, platform_id:platform_id,qty:qty},
                                         success: function (){
                                             location.reload();
                                         }

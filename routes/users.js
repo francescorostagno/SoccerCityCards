@@ -88,8 +88,8 @@ router.post('/addClient',isLoggedIn,function (req,res,next){
 })
 
 router.post('/addCard',isLoggedIn,function (req,res,next){
-  if(req.body.value && req.body.card_name && req.body.player_name && req.body.printing && req.body.client_id && req.user.id){
-    addCard(req.body.player_name,req.body.card_name,req.body.value,req.body.client_id,req.body.platform_id,req.body.printing, req.user.id,function (err,data){
+  if(req.body.value && req.body.card_name && req.body.player_name && req.body.printing && req.body.client_id && req.user.id && req.body.qty){
+    addCard(req.body.player_name,req.body.card_name,req.body.value,req.body.client_id,req.body.platform_id,req.body.printing,  req.body.qty,req.user.id,function (err,data){
       if(!err){
         res.send(true);
       }

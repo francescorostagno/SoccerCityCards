@@ -49,8 +49,8 @@ const editProfile = function (username,user_id,email,cb){
     })
 }
 
-const addCard = function (player_name, card_name, value,client_id,platform_id,printing,user_id, cb){
-    db.query("INSERT INTO cards(player_name,card_name,printing,value,client_id,sell_platform_id,user_id) VALUES('"+player_name+"','"+card_name+"','"+printing+"','"+value+"','"+ parseInt(client_id) +"','"+ parseInt(platform_id) +"', '"+ parseInt(user_id) +"')",function (err,res){
+const addCard = function (player_name, card_name, value,client_id,platform_id,printing,qty,user_id, cb){
+    db.query("INSERT INTO cards(player_name,card_name,printing,value,qty,client_id,sell_platform_id,user_id) VALUES('"+player_name+"','"+card_name+"','"+printing+"','"+value+"','"+ parseInt(qty) +"','"+ parseInt(client_id) +"','"+ parseInt(platform_id) +"', '"+ parseInt(user_id) +"')",function (err,res){
         if(!err){
             cb(null,true);
         }else{
