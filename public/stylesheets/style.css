@@ -162,6 +162,9 @@ table.cards_table{
   margin-top: 0.97rem;
 }
 
+.title{
+  text-align: center;
+}
 
 @media (min-width: 992px) {
   .gedf-main {
